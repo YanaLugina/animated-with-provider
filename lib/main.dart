@@ -46,17 +46,15 @@ class MyColorProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  bool switchChange() {
+  void switchChange() {
     if (_switchState) {
       _color = Colors.orange;
       _switchState = false;
       notifyListeners();
-      return false;
     } else {
       _color = Colors.green;
       _switchState = true;
       notifyListeners();
-      return true;
     }
   }
 }
@@ -76,16 +74,26 @@ class MyColorPage extends StatelessWidget {
         centerTitle: true,
       ),
       body: Center(
-        child: ListView(
-          scrollDirection: Axis.vertical,
+        child: Column(
+          mainAxisSize: MainAxisSize.max,
+
           children: <Widget>[
-            Container(
-              height: 200.0,
-              width: 200.0,
-              color: Colors.grey[300],
+            SizedBox(
+              height: 10.0,
+            ),
+            AnimatedContainer(
+              height: _state.switchState ? 100.0 : 200.0,
+              width: _state.switchState ? 350.0 : 15.0,
+              padding: EdgeInsets.all(10.0),
+              alignment: _state.switchState
+                  ? Alignment.center
+                  : AlignmentDirectional.bottomEnd,
+              duration: const Duration(seconds: 2),
+              curve: Curves.fastOutSlowIn,
+              color: _state.colorValue,
             ),
             Switch(
-                value: _state._switchState,
+                value: _state.switchState,
                 onChanged: (_) => _state.switchChange()
             )
           ],
