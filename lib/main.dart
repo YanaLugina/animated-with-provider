@@ -76,7 +76,7 @@ class MyColorPage extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisSize: MainAxisSize.max,
-
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             SizedBox(
               height: 10.0,
