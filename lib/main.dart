@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'dart:math';
 
 void main() {
   runApp(MyApp());
@@ -40,6 +41,10 @@ class MyColorProvider extends ChangeNotifier {
 
   Color get colorValue => _color;
   bool get switchState => _switchState;
+  double get switchHeight => random.nextInt(300).toDouble();
+  double get switchWidth => random.nextInt(300).toDouble();
+  double get switchCircular => random.nextInt(100).toDouble();
+  final random = Random();
 
   void switchColor() {
     _color = Colors.green;
@@ -48,11 +53,21 @@ class MyColorProvider extends ChangeNotifier {
 
   void switchChange() {
     if (_switchState) {
-      _color = Colors.orange;
+      _color = Color.fromRGBO(
+        random.nextInt(256),
+        random.nextInt(256),
+        random.nextInt(256),
+        1,
+      );
       _switchState = false;
       notifyListeners();
     } else {
-      _color = Colors.green;
+      _color = Color.fromRGBO(
+        random.nextInt(256),
+        random.nextInt(256),
+        random.nextInt(256),
+        1,
+      );
       _switchState = true;
       notifyListeners();
     }
@@ -60,6 +75,8 @@ class MyColorProvider extends ChangeNotifier {
 }
 
 class MyColorPage extends StatelessWidget {
+  final random = Random();
+
   @override
   Widget build (BuildContext context) {
     MyColorProvider _state = Provider.of<MyColorProvider>(context);
@@ -77,23 +94,28 @@ class MyColorPage extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.max,
           crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             SizedBox(
               height: 10.0,
             ),
             AnimatedContainer(
-              height: _state.switchState ? 100.0 : 200.0,
-              width: _state.switchState ? 350.0 : 15.0,
+              height: _state.switchHeight,
+              width: _state.switchWidth,
               padding: EdgeInsets.all(10.0),
               alignment: _state.switchState
                   ? Alignment.center
                   : AlignmentDirectional.bottomEnd,
               duration: const Duration(seconds: 2),
               curve: Curves.fastOutSlowIn,
-              color: _state.colorValue,
+              decoration: BoxDecoration(
+                color: _state.colorValue,
+                borderRadius: BorderRadius.circular(_state.switchCircular),
+              ),
             ),
             Switch(
                 value: _state.switchState,
+                activeColor: _state.colorValue,
                 onChanged: (_) => _state.switchChange()
             )
           ],
