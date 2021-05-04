@@ -5,7 +5,7 @@ class MyColorProvider extends ChangeNotifier {
   Color _color = Colors.red;
   bool _switchState = false;
 
-  Color get colorValue => _color;
+  Color? get colorValue => _color;
   bool get switchState => _switchState;
   double get switchHeight => random.nextInt(300).toDouble();
   double get switchWidth => random.nextInt(300).toDouble();
